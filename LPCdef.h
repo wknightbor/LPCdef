@@ -1131,3 +1131,104 @@
 // Select interrupt register match.
 #define I2CMMCTRL_MATCH_ALL		(0x02)
 #define I2CMMCTRL_MATCH_ALL_Msk	(1<<I2CMMCTRL_MATCH_ALL)
+
+
+// LPC_SSPx->CR0
+// SPI/SSP Control Register 0
+
+// Data Size Select. This field controls the number of bits
+// transferred in each frame. Values 0000-0010 are not
+// supported and should not be used. (0x3-0xf: 4bit-16bit)
+#define SSPCR0_DSS				(0x00)
+#define SSPCR0_DSS_Msk			(0b1111<<SSPCR0_DSS)
+
+// Frame Format.
+// 0x0 	SPI
+// 0x1 	TI
+// 0x2 	Microwire
+// 0x3 	This combination is not supported and should not be used.
+#define SSPCR0_FRF				(0x04)
+#define SSPCR0_FRF_Msk			(0b11<<SSPCR0_FRF)
+
+// Clock Out Polarity. This bit is only used in SPI mode.
+// 0 	SPI controller maintains the bus clock low between frames.
+// 1 	SPI controller maintains the bus clock high between frames.
+#define SSPCR0_CPOL				(0x06)
+#define SSPCR0_CPOL_Msk			(0b1<<SSPCR0_CPOL)
+
+// Clock Out Phase. This bit is only used in SPI mode.
+// 0 	SPI controller captures serial data on the first clock transition
+// 		of the frame, that is, the transition away from the inter-frame
+// 		state of the clock line.
+// 1 	SPI controller captures serial data on the second clock
+// 		transition of the frame, that is, the transition back to the
+// 		inter-frame state of the clock line.
+#define SSPCR0_CPHA				(0x07)
+#define SSPCR0_CPHA_Msk			(0b1<<SSPCR0_CPHA)
+
+// Serial Clock Rate. The number of prescaler output clocks per 0x00
+// bit on the bus, minus one. Given that CPSDVSR is the
+// prescale divider, and the APB clock PCLK clocks the
+// prescaler, the bit frequency is PCLK / (CPSDVSR  [SCR+1]).
+#define SSPCR0_SCR				(0x08)
+#define SSPCR0_SCR_Msk			(0b11111111<<SSPCR0_SCR)
+
+
+// LPC_SSPx->CR1
+// SPI/SSP Control Register 1
+
+// Loop Back Mode
+// 0 During normal operation.
+// 1 Serial input is taken from the serial output (MOSI or MISO)
+//   rather than the serial input pin (MISO or MOSI respectively).
+#define SSPCR1_LBM				(0x00)
+#define SSPCR1_LBM_Msk			(0b1<<SSPCR1_LBM)
+
+// SPI Enable.
+// 0	The SPI controller is disabled.
+// 1 	The SPI controller will interact with other devices on the
+// 		serial bus. Software should write the appropriate control
+// 		information to the other SPI/SSP registers and interrupt
+//		controller registers, before setting this bit.
+#define SSPCR1_SSE				(0x01)
+#define SSPCR1_SSE_Msk			(0b1<<SSPCR1_SSE)
+
+// Master/Slave Mode.This bit can only be written when the SSE bit is 0.
+// 0 	The SPI controller acts as a master on the bus, driving the
+// 		SCLK, MOSI, and SSEL lines and receiving the MISO line.
+// 1 	The SPI controller acts as a slave on the bus, driving MISO
+// 		line and receiving SCLK, MOSI, and SSEL lines.
+#define SSPCR1_MS				(0x02)
+#define SSPCR1_MS_Msk			(0b1<<SSPCR1_MS)
+
+// Slave Output Disable. This bit is relevant only in slave
+// mode (MS = 1). If it is 1, this blocks this SPI controller from
+// driving the transmit data line (MISO).
+#define SSPCR1_SOD				(0x03)
+#define SSPCR1_SOD_Msk			(0b1<<SSPCR1_SOD)
+
+
+// LPC_SSP0->SR
+// SPI/SSP Status Register
+
+// Transmit FIFO Empty. This bit is 1 is the Transmit FIFO is empty, 0 if not.
+#define SSPSR_TFE				(0x00)
+#define SSPSR_TFE_Msk			(0b1<<SSPSR_TFE)
+
+// Transmit FIFO Not Full. This bit is 0 if the Tx FIFO is full, 1 if not.
+#define SSPSR_TNF				(0x01)
+#define SSPSR_TNF_Msk			(0b1<<SSPSR_TNF)
+
+// Receive FIFO Not Empty. This bit is 0 if the Receive FIFO is empty, 1 if not.
+#define SSPSR_RNE				(0x02)
+#define SSPSR_RNE_Msk			(0b1<<SSPSR_RNE)
+
+// Receive FIFO Full. This bit is 1 if the Receive FIFO is full, 0 if not.
+#define SSPSR_RFF				(0x03)
+#define SSPSR_RFF_Msk			(0b1<<SSPSR_RFF)
+
+// Busy. This bit is 0 if the SPI controller is idle, 1 if it is currently
+// sending/receiving a frame and/or the Tx FIFO is not empty.
+#define SSPSR_BSY				(0x04)
+#define SSPSR_BSY_Msk			(0b1<<SSPSR_BSY)
+
